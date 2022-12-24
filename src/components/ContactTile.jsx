@@ -1,5 +1,6 @@
 import React from "react";
 import { createUseStyles } from "react-jss";
+import { colors } from "../variables/color.variables";
 
 const ContactTile = ({ imageUrl, title, subTitle, handleClick, isActive }) => {
   const useStyles = createUseStyles({
@@ -25,12 +26,12 @@ const ContactTile = ({ imageUrl, title, subTitle, handleClick, isActive }) => {
     },
     btnStyles: {
       borderStyle: "solid",
-      borderColor: "#131324",
+      borderColor: colors.chatScreenBG,
       display: "flex",
       flexDirection: "row",
       paddingLeft: "20px",
       width: "100%",
-      backgroundColor: "#ffffff34",
+      backgroundColor: colors.tileBG,
       cursor: "pointer",
 
       "&:hover": {
@@ -56,7 +57,7 @@ const ContactTile = ({ imageUrl, title, subTitle, handleClick, isActive }) => {
       backgroundColor: "#7CFC00",
       borderRadius: "50%",
       display: "inline-block",
-      marginTop:'0.5vh'
+      marginTop: "0.5vh",
     },
     offline: {
       alignContent: "center",
@@ -65,8 +66,7 @@ const ContactTile = ({ imageUrl, title, subTitle, handleClick, isActive }) => {
       backgroundColor: "red",
       borderRadius: "50%",
       display: "inline-block",
-      marginTop:'0.5vh'
-
+      marginTop: "0.5vh",
     },
   });
 

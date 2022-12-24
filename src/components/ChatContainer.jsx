@@ -3,6 +3,7 @@ import { axiosInstance } from "../axios";
 import { ChatState } from "../context/ChatProvider";
 import ChatInput from "./ChatInput";
 import { createUseStyles } from "react-jss";
+import { colors } from "../variables/color.variables";
 
 const useStyles = createUseStyles({
   chatContainer: {
@@ -66,7 +67,7 @@ const useStyles = createUseStyles({
     padding: "0 2rem",
     fontSize: "1.3rem",
     borderRadius: "1rem",
-    color: "#d1d1d1",
+    color: colors.messageColor,
     backgroundColor: "#4f04ff21",
   },
 
@@ -76,7 +77,7 @@ const useStyles = createUseStyles({
     padding: "0 2rem",
     fontSize: "1.3rem",
     borderRadius: "1rem",
-    color: "#d1d1d1",
+    color: colors.messageColor,
     backgroundColor: "#9900ff20",
   },
 });

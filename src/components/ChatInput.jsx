@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { createUseStyles } from "react-jss";
+import { colors } from "../variables/color.variables";
 
 const useStyles = createUseStyles({
   inputContainer: {
@@ -12,7 +13,7 @@ const useStyles = createUseStyles({
     width: "60vw",
     height: "5vh",
     borderRadius: "10px",
-    backgroundColor: "#131324",
+    backgroundColor: colors.chatScreenBG,
     color: "white",
     border: "none",
     paddingLeft: "1rem",
@@ -28,7 +29,7 @@ const useStyles = createUseStyles({
     width: "2.5vw",
     borderRadius: "50%",
     height: "auto",
-    backgroundColor: "#131324",
+    backgroundColor: colors.chatScreenBG,
     border: "none",
     color: "white",
     cursor: "pointer",

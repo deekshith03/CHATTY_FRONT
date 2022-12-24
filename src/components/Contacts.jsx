@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { axiosInstance } from "../axios";
 import { ChatState } from "../context/ChatProvider";
 import { createUseStyles } from "react-jss";
 import ContactTile from "./ContactTile";
 import Logout from "./Logout";
-import io from "socket.io-client";
-
-const socket = io();
+import { colors } from "../variables/color.variables";
 
 const useStyles = createUseStyles({
   container: {
@@ -32,7 +30,7 @@ const useStyles = createUseStyles({
   },
 
   contact: {
-    backgroundColor: "#ffffff34",
+    backgroundColor: colors.tileBG,
     minHeight: "5rem",
     cursor: "pointer",
     width: "90%",
@@ -61,7 +59,7 @@ const useStyles = createUseStyles({
     justifyContent: "space-between",
   },
 });
-export const Contacts = ({socket}) => {
+export const Contacts = ({ socket }) => {
   const { user, setContacts, contacts, setSelectedContact, usersActive } =
     ChatState();
 

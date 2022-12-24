@@ -7,6 +7,7 @@ import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import { axiosInstance } from "../axios";
 import io from "socket.io-client";
+const Base_uri = import.meta.env.VITE_BASE_URL;
 
 const useStyles = createUseStyles({
   container: {
@@ -53,7 +54,7 @@ function ChatScreen() {
 
   useEffect(() => {
     if (user) {
-      socket.current = io("http://localhost:8080/");
+      socket.current = io(Base_uri);
       socket.current.emit("setup", user);
       socket.current.on("online", (msg) => {
         setUsersActive(msg);

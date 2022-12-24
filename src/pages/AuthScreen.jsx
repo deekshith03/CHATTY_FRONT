@@ -13,7 +13,7 @@ const useStyles = createUseStyles({
     alignItems: "center",
     justifyContent: "center",
     color: colors.themeColor,
-    backgroundColor: "#131324",
+    backgroundColor: colors.chatScreenBG,
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
@@ -43,7 +43,7 @@ const useStyles = createUseStyles({
       alignItems: "center",
       justifyContent: "center",
       color: colors.themeColor,
-      backgroundColor: "#131324",
+      backgroundColor: colors.chatScreenBG,
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
       backgroundSize: "cover",
@@ -72,7 +72,6 @@ function AuthScreen() {
   const handleNewUser = () => {
     setNewUser((newUser) => !newUser);
   };
-
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
