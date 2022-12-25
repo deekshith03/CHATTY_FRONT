@@ -57,7 +57,7 @@ const useStyles = createUseStyles({
     width: "100%",
     height: "100vh",
     position: "fixed",
-    background: "rgba(0, 0, 0, 0.834) center no-repeat",
+    background: "rgba(0, 0, 0, 0.25) center no-repeat",
     backgroundImage: `url(
       "https://media.giphy.com/media/8agqybiK5LW8qrG3vJ/giphy.gif"
     )`,
@@ -96,12 +96,8 @@ export const SignIn = ({ handleNewUser }) => {
           navigate("/chats");
         })
         .catch((error) => {
-          console.log(error);
-          toast(error.response.data.error);
+          toast("Invalid credentials");
         });
-      setTimeout(() => {
-        setLoading(false);
-      }, 1500);
     } else {
       signInSchema.validate(values, { abortEarly: false }).catch((err) => {
         const errors = err.inner.reduce((acc, error) => {
@@ -114,6 +110,10 @@ export const SignIn = ({ handleNewUser }) => {
         toast(Object.values(errors)[0]);
       });
     }
+
+    setTimeout(() => {
+      setLoading(false);
+    },500);
   };
   return (
     <>
