@@ -1,4 +1,4 @@
-import React, { useEffect, useRef,useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createUseStyles } from "react-jss";
 import { ChatState } from "../context/ChatProvider";
 import { colors } from "../variables/color.variables";
@@ -7,6 +7,8 @@ import Welcome from "../components/Welcome";
 import ChatContainer from "../components/ChatContainer";
 import { axiosInstance } from "../axios";
 import io from "socket.io-client";
+import { useWindowWidth } from "@react-hook/window-size";
+
 const Base_uri = import.meta.env.VITE_BASE_URL;
 
 const useStyles = createUseStyles({
@@ -37,16 +39,40 @@ const useStyles = createUseStyles({
     )`,
     zIndex: 1,
   },
+
+  contactsClose: {
+    display: "none",
+  },
+  contactsOpen: {
+    display: "block",
+  },
 });
 
 function ChatScreen() {
   const classes = useStyles();
   const socket = useRef();
-  const { user, selectedContact, setSelectedContactMessages, setUsersActive } =
-    ChatState();
+  const {
+    user,
+    selectedContact,
+    setSelectedContactMessages,
+    setUsersActive,
+    setSelectedContact,
+  } = ChatState();
   const [loading, setLoading] = useState(false);
+  const [dynamicClass, setDynamicStyles] = useState("contactsOpen");
+  const onlyWidth = useWindowWidth();
+
+  const handleBack = () => {
+    setSelectedContact(null);
+    setDynamicStyles("contactsOpen");
+  };
+
   useEffect(() => {
     if (selectedContact) {
+      if (onlyWidth < 480) {
+        setDynamicStyles("contactsClose");
+      }
+
       setLoading(true);
       axiosInstance
         .post("/api/message/getmessages", {
@@ -62,9 +88,9 @@ function ChatScreen() {
         .catch((error) => {
           console.log(error);
         });
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
   }, [selectedContact]);
 
@@ -92,10 +118,14 @@ function ChatScreen() {
         <div className={classes.loaderContainer} />
       ) : (
         <div className={classes.window}>
-          <div>
+          <div className={classes[dynamicClass]}>
             <Contacts socket={socket} />
           </div>
-          {!selectedContact ? <Welcome /> : <ChatContainer socket={socket} />}
+          {!selectedContact ? (
+            <Welcome />
+          ) : (
+            <ChatContainer socket={socket} handleBack={() => handleBack()} />
+          )}
         </div>
       )}
     </div>

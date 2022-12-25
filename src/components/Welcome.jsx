@@ -12,6 +12,12 @@ const useStyles = createUseStyles({
     flexDirection: "column",
     width: "100vw",
   },
+
+  "@media only screen and (max-device-width: 480px)": {
+    welcomeContainer: {
+      display: "none",
+    },
+  },
 });
 export default function Welcome() {
   const classes = useStyles();

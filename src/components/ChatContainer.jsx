@@ -4,6 +4,8 @@ import { ChatState } from "../context/ChatProvider";
 import ChatInput from "./ChatInput";
 import { createUseStyles } from "react-jss";
 import { colors } from "../variables/color.variables";
+import { useWindowWidth } from "@react-hook/window-size";
+import { BiLeftArrowCircle } from "react-icons/bi";
 
 const useStyles = createUseStyles({
   chatContainer: {
@@ -80,8 +82,21 @@ const useStyles = createUseStyles({
     color: colors.messageColor,
     backgroundColor: "#9900ff20",
   },
+  backBtn: {
+    marginRight: "2vw",
+    cursor: "pointer",
+    width: "8vw",
+    height: "auto",
+  },
+
+  "@media only screen and (max-device-width: 480px)": {
+    chatContainer: {
+      width: "100vw",
+      height: "70vh",
+    },
+  },
 });
-const ChatContainer = ({ socket }) => {
+const ChatContainer = ({ socket, handleBack }) => {
   const classes = useStyles();
   const {
     user,
@@ -90,6 +105,7 @@ const ChatContainer = ({ socket }) => {
     setSelectedContactMessages,
   } = ChatState();
   const scrollRef = useRef();
+  const onlyWidth = useWindowWidth();
 
   const handleSendMsg = async (msg) => {
     await socket.current.emit("send_message", {
@@ -127,15 +143,19 @@ const ChatContainer = ({ socket }) => {
   useEffect(() => {
     if (socket.current) {
       socket.current.on("receive_message", (msg) => {
-        setSelectedContactMessages((prev) => [
-          ...prev,
-          {
-            from: msg.senderID,
-            to: msg.receiverID,
-            message: msg.content,
-            fromSelf: msg.fromSelf,
-          },
-        ]);
+        console.log(msg);
+
+        if (msg.senderID === selectedContact._id) {
+          setSelectedContactMessages((prev) => [
+            ...prev,
+            {
+              from: msg.senderID,
+              to: msg.receiverID,
+              message: msg.content,
+              fromSelf: msg.fromSelf,
+            },
+          ]);
+        }
       });
     }
 
@@ -163,6 +183,12 @@ const ChatContainer = ({ socket }) => {
             <h3 className={classes.username}>{selectedContact.name}</h3>
           </div>
         </div>
+        {onlyWidth < 480 && (
+          <BiLeftArrowCircle
+            className={classes.backBtn}
+            onClick={() => handleBack()}
+          />
+        )}
       </div>
       <div className={classes.flexContainer}>
         <ChatInput handleSendMsg={handleSendMsg} />

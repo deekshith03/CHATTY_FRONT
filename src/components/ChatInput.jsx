@@ -34,6 +34,15 @@ const useStyles = createUseStyles({
     color: "white",
     cursor: "pointer",
   },
+
+  "@media only screen and (max-device-width: 480px)": {
+    inputStyles: {
+      width: "70vw",
+    },
+    inputBtn: {
+      width: "3vw",
+    },
+  },
 });
 const ChatInput = ({ handleSendMsg }) => {
   const [msg, setMsg] = useState("");

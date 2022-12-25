@@ -58,6 +58,15 @@ const useStyles = createUseStyles({
     margin: "1.5vw",
     justifyContent: "space-between",
   },
+
+  "@media only screen and (max-device-width: 480px)": {
+    container: {
+      width: "82vw",
+    },
+    toplevel: {
+      width: "82vw",
+    },
+  },
 });
 export const Contacts = ({ socket }) => {
   const {
@@ -68,7 +77,7 @@ export const Contacts = ({ socket }) => {
     usersActive,
     selectedContact,
   } = ChatState();
-
+  
   const classes = useStyles();
 
   useEffect(() => {
@@ -85,7 +94,6 @@ export const Contacts = ({ socket }) => {
   }, []);
 
   const handleClick = (contact) => {
-    console.log(contact, selectedContact);
 
     if (!selectedContact || contact.email !== selectedContact.email) {
       setSelectedContact(contact);

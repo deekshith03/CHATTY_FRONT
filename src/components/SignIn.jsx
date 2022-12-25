@@ -93,15 +93,15 @@ export const SignIn = ({ handleNewUser }) => {
         .post("/api/user/login", data)
         .then((res) => {
           localStorage.setItem("userInfo", JSON.stringify(res.data));
-          setTimeout(() => {
-            setLoading(false);
-          }, 1500);
           navigate("/chats");
         })
         .catch((error) => {
           console.log(error);
           toast(error.response.data.error);
         });
+      setTimeout(() => {
+        setLoading(false);
+      }, 1500);
     } else {
       signInSchema.validate(values, { abortEarly: false }).catch((err) => {
         const errors = err.inner.reduce((acc, error) => {
