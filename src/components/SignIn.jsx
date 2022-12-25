@@ -113,7 +113,7 @@ export const SignIn = ({ handleNewUser }) => {
 
     setTimeout(() => {
       setLoading(false);
-    },500);
+    },2000);
   };
   return (
     <>

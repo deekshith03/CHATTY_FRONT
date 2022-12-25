@@ -51,7 +51,7 @@ const useStyles = createUseStyles({
     width: "100%",
     height: "100vh",
     position: "fixed",
-    background: "rgba(0, 0, 0, 0.25) center no-repeat",
+    background: "rgba(0, 0, 0, 0.82) center no-repeat",
     backgroundImage: `url(
       "https://media.giphy.com/media/8agqybiK5LW8qrG3vJ/giphy.gif"
     )`,
@@ -105,6 +105,7 @@ export const Register = ({ handleNewUser }) => {
         .then((res) => {
           localStorage.setItem("userInfo", JSON.stringify(res.data));
           navigate("/chats");
+          setLoading(false);
         })
         .catch((error) => {
           toast(error.response.data.error);
@@ -122,7 +123,7 @@ export const Register = ({ handleNewUser }) => {
     }
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    },2000);
   };
 
   return (
