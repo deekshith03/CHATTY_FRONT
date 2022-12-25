@@ -94,9 +94,11 @@ export const SignIn = ({ handleNewUser }) => {
         .then((res) => {
           localStorage.setItem("userInfo", JSON.stringify(res.data));
           navigate("/chats");
+          setLoading(false);
         })
         .catch((error) => {
           toast("Invalid credentials");
+          setLoading(false);
         });
     } else {
       signInSchema.validate(values, { abortEarly: false }).catch((err) => {
@@ -111,9 +113,9 @@ export const SignIn = ({ handleNewUser }) => {
       });
     }
 
-    setTimeout(() => {
-      setLoading(false);
-    },2000);
+    // setTimeout(() => {
+    //   setLoading(false);
+    // },2000);
   };
   return (
     <>

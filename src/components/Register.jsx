@@ -109,6 +109,7 @@ export const Register = ({ handleNewUser }) => {
         })
         .catch((error) => {
           toast(error.response.data.error);
+          setLoading(false);
         });
     } else {
       signupSchema.validate(values, { abortEarly: false }).catch((err) => {
@@ -121,9 +122,6 @@ export const Register = ({ handleNewUser }) => {
         toast(Object.values(errors)[0]);
       });
     }
-    setTimeout(() => {
-      setLoading(false);
-    },2000);
   };
 
   return (
