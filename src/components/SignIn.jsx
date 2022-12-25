@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { axiosInstance } from "../axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { colors } from "../variables/color.variables";
 
 const useStyles = createUseStyles({
@@ -52,6 +52,17 @@ const useStyles = createUseStyles({
       color: colors.themeColor,
     },
   },
+
+  loaderContainer: {
+    width: "100%",
+    height: "100vh",
+    position: "fixed",
+    background: "rgba(0, 0, 0, 0.834) center no-repeat",
+    backgroundImage: `url(
+      "https://media.giphy.com/media/8agqybiK5LW8qrG3vJ/giphy.gif"
+    )`,
+    zIndex: 1,
+  },
 });
 
 const signInSchema = Yup.object().shape({
@@ -63,6 +74,7 @@ export const SignIn = ({ handleNewUser }) => {
   const classes = useStyles();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -75,11 +87,15 @@ export const SignIn = ({ handleNewUser }) => {
     });
 
     if (isFormValid) {
+      setLoading(true);
       const data = { email: email, password: password };
       axiosInstance
         .post("/api/user/login", data)
         .then((res) => {
           localStorage.setItem("userInfo", JSON.stringify(res.data));
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500);
           navigate("/chats");
         })
         .catch((error) => {
@@ -101,40 +117,44 @@ export const SignIn = ({ handleNewUser }) => {
   };
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "column" }}>
-        <form>
-          <div className={classes.signInForm}>
-            <h2>CHATTY</h2>
-            <h2>Welcome Back !</h2>
-            <FormInput
-              description="Email id"
-              placeholder="Enter e-mail"
-              type="email"
-              handleChange={(e) => setEmail(e.target.value)}
-              value={email}
-            />
-            <FormInput
-              description="Password"
-              placeholder="Enter your password"
-              type="password"
-              handleChange={(e) => setPassword(e.target.value)}
-              value={password}
-            />
-            <button
-              className={classes.submitBtn}
-              type="button"
-              onClick={() => handleSubmit()}
-            >
-              Log In
+      {loading ? (
+        <div className={classes.loaderContainer} />
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <form>
+            <div className={classes.signInForm}>
+              <h2>CHATTY</h2>
+              <h2>Welcome Back !</h2>
+              <FormInput
+                description="Email id"
+                placeholder="Enter e-mail"
+                type="email"
+                handleChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+              <FormInput
+                description="Password"
+                placeholder="Enter your password"
+                type="password"
+                handleChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+              <button
+                className={classes.submitBtn}
+                type="button"
+                onClick={() => handleSubmit()}
+              >
+                Log In
+              </button>
+            </div>
+          </form>
+          <div>
+            <button className={classes.linkBtn} onClick={() => handleNewUser()}>
+              Don't have an account? Register here.
             </button>
           </div>
-        </form>
-        <div>
-          <button className={classes.linkBtn} onClick={() => handleNewUser()}>
-            Don't have an account? Register here.
-          </button>
         </div>
-      </div>
+      )}
       <ToastContainer position="top-center" autoClose={5000} pauseOnHover />
     </>
   );

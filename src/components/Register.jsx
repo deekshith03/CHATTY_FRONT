@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { axiosInstance } from "../axios";
 import { colors } from "../variables/color.variables";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createUseStyles({
   RegisterForm: {
@@ -46,6 +46,17 @@ const useStyles = createUseStyles({
       color: colors.themeColor,
     },
   },
+
+  loaderContainer: {
+    width: "100%",
+    height: "100vh",
+    position: "fixed",
+    background: "rgba(0, 0, 0, 0.834) center no-repeat",
+    backgroundImage: `url(
+      "https://media.giphy.com/media/8agqybiK5LW8qrG3vJ/giphy.gif"
+    )`,
+    zIndex: 1,
+  },
 });
 
 const signupSchema = Yup.object().shape({
@@ -72,6 +83,7 @@ export const Register = ({ handleNewUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -87,10 +99,14 @@ export const Register = ({ handleNewUser }) => {
     });
 
     if (isFormValid) {
+      setLoading(true);
       axiosInstance
         .post("/api/user/register", values)
         .then((res) => {
           localStorage.setItem("userInfo", JSON.stringify(res.data));
+          setTimeout(() => {
+            setLoading(false);
+          }, 1500);
           navigate("/chats");
         })
         .catch((error) => {
@@ -110,55 +126,61 @@ export const Register = ({ handleNewUser }) => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <form>
-        <div className={classes.RegisterForm}>
-          <h2>Register Here !!</h2>
-          <FormInput
-            description="Email id"
-            placeholder="Enter your email-id"
-            type="email"
-            handleChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-          <FormInput
-            description="name"
-            placeholder="Enter your name"
-            type="text"
-            handleChange={(e) => setName(e.target.value)}
-            value={name}
-          />
-          <FormInput
-            description="Password"
-            placeholder="atleast 8-16 length"
-            type="password"
-            handleChange={(e) => setPassword(e.target.value)}
-            value={password}
-          />
-          <FormInput
-            description="Confirm Password"
-            placeholder="atleast 8-16 length"
-            type="password"
-            handleChange={(e) => setConfirmPassword(e.target.value)}
-            value={confirmPassword}
-          />
-          <button
-            className={classes.submitBtn}
-            type="button"
-            onClick={() => handleSubmit()}
-          >
-            Register
-          </button>
+    <>
+      {loading ? (
+        <div className={classes.loaderContainer} />
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <form>
+            <div className={classes.RegisterForm}>
+              <h2>Register Here !!</h2>
+              <FormInput
+                description="Email id"
+                placeholder="Enter your email-id"
+                type="email"
+                handleChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+              <FormInput
+                description="name"
+                placeholder="Enter your name"
+                type="text"
+                handleChange={(e) => setName(e.target.value)}
+                value={name}
+              />
+              <FormInput
+                description="Password"
+                placeholder="atleast 8-16 length"
+                type="password"
+                handleChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+              <FormInput
+                description="Confirm Password"
+                placeholder="atleast 8-16 length"
+                type="password"
+                handleChange={(e) => setConfirmPassword(e.target.value)}
+                value={confirmPassword}
+              />
+              <button
+                className={classes.submitBtn}
+                type="button"
+                onClick={() => handleSubmit()}
+              >
+                Register
+              </button>
+            </div>
+          </form>
+          <div>
+            <FiArrowLeftCircle
+              size="3em"
+              style={{ cursor: "pointer", color: "white" }}
+              onClick={() => handleNewUser()}
+            />
+          </div>
+          <ToastContainer position="top-center" autoClose={5000} pauseOnHover />
         </div>
-      </form>
-      <div>
-        <FiArrowLeftCircle
-          size="3em"
-          style={{ cursor: "pointer" }}
-          onClick={() => handleNewUser()}
-        />
-      </div>
-      <ToastContainer position="top-center" autoClose={5000} pauseOnHover />
-    </div>
+      )}
+    </>
   );
 };
