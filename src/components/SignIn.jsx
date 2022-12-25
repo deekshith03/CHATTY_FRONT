@@ -65,6 +65,8 @@ const useStyles = createUseStyles({
   },
 });
 
+
+//sign up validatiions using yup 
 const signInSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("email required"),
   password: Yup.string().required("password required"),
@@ -77,6 +79,8 @@ export const SignIn = ({ handleNewUser }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
+  //used for handling validations and sending api request
   const handleSubmit = async () => {
     const values = {
       email: email,
@@ -112,11 +116,9 @@ export const SignIn = ({ handleNewUser }) => {
         toast(Object.values(errors)[0]);
       });
     }
-
-    // setTimeout(() => {
-    //   setLoading(false);
-    // },2000);
   };
+
+  
   return (
     <>
       {loading ? (

@@ -59,6 +59,8 @@ const useStyles = createUseStyles({
   },
 });
 
+
+//validation schema for signup schema 
 const signupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email Required"),
   name: Yup.string()
@@ -86,6 +88,7 @@ export const Register = ({ handleNewUser }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  //handle new regisrations along with validations
   const handleSubmit = async () => {
     const values = {
       name: name,

@@ -4,8 +4,7 @@ import { ChatState } from "../context/ChatProvider";
 import ChatInput from "./ChatInput";
 import { createUseStyles } from "react-jss";
 import { colors } from "../variables/color.variables";
-import { useWindowWidth } from "@react-hook/window-size";
-import { BiLeftArrowCircle } from "react-icons/bi";
+import ChatHeader from "./ChatHeader";
 
 const useStyles = createUseStyles({
   chatContainer: {
@@ -19,23 +18,6 @@ const useStyles = createUseStyles({
     height: "72vh",
     marginTop: "6vh",
   },
-  chatHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    color: "white",
-    marginTop: "1.2vh",
-  },
-
-  userDetails: {
-    display: "flex",
-    alignItems: "center",
-    gap: "1rem",
-  },
-  avatar: {
-    height: "3rem",
-  },
-
   chatMessages: {
     display: "flex",
     flexDirection: "column",
@@ -51,18 +33,15 @@ const useStyles = createUseStyles({
       },
     },
   },
-
   messageSended: {
     display: "flex",
     justifyContent: "flex-end",
     margin: "0 1.2vw",
   },
-
   messageReceived: {
     display: "flex",
     justifyContent: "flex-start",
   },
-
   contentSended: {
     maxWidth: "30vw",
     overflowWrap: "break-word",
@@ -72,7 +51,6 @@ const useStyles = createUseStyles({
     color: colors.messageColor,
     backgroundColor: "#4f04ff21",
   },
-
   contentReceived: {
     maxWidth: "30vw",
     overflowWrap: "break-word",
@@ -82,13 +60,6 @@ const useStyles = createUseStyles({
     color: colors.messageColor,
     backgroundColor: "#9900ff20",
   },
-  backBtn: {
-    marginRight: "2vw",
-    cursor: "pointer",
-    width: "8vw",
-    height: "auto",
-  },
-
   "@media only screen and (max-device-width: 480px)": {
     chatContainer: {
       width: "100vw",
@@ -96,6 +67,7 @@ const useStyles = createUseStyles({
     },
   },
 });
+
 const ChatContainer = ({ socket, handleBack }) => {
   const classes = useStyles();
   const {
@@ -105,8 +77,8 @@ const ChatContainer = ({ socket, handleBack }) => {
     setSelectedContactMessages,
   } = ChatState();
   const scrollRef = useRef();
-  const onlyWidth = useWindowWidth();
 
+  //send new messages to store in database and emit them to receivers room
   const handleSendMsg = async (msg) => {
     await socket.current.emit("send_message", {
       senderID: user.id,
@@ -140,11 +112,10 @@ const ChatContainer = ({ socket, handleBack }) => {
       });
   };
 
+  //sets socket for listnening to new messages
   useEffect(() => {
     if (socket.current) {
       socket.current.on("receive_message", (msg) => {
-        console.log(msg);
-
         if (msg.senderID === selectedContact._id || msg.senderID === user.id) {
           setSelectedContactMessages((prev) => [
             ...prev,
@@ -164,35 +135,19 @@ const ChatContainer = ({ socket, handleBack }) => {
     };
   }, []);
 
+  //to enable automatic smooth scrolling when new messages arrive
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollRef.current?.scrollIntoView({ behavior: "auto" });
   }, [selectedContactMessages]);
 
   return (
     <div className={classes.chatContainer}>
-      <div className={classes.chatHeader}>
-        <div className={classes.userDetails}>
-          <div>
-            <img
-              className={classes.avatar}
-              src={selectedContact.avatarImage}
-              alt=""
-            />
-          </div>
-          <div>
-            <h3 className={classes.username}>{selectedContact.name}</h3>
-          </div>
-        </div>
-        {onlyWidth < 480 && (
-          <BiLeftArrowCircle
-            className={classes.backBtn}
-            onClick={() => handleBack()}
-          />
-        )}
-      </div>
+      <ChatHeader
+        selectedContact={selectedContact}
+        handleBack={() => handleBack()}
+      />
       <div className={classes.flexContainer}>
         <ChatInput handleSendMsg={handleSendMsg} />
-
         {selectedContactMessages && (
           <div className={classes.chatMessages}>
             {selectedContactMessages.map((message, ind) => {

@@ -79,7 +79,8 @@ export const Contacts = ({ socket }) => {
   } = ChatState();
   
   const classes = useStyles();
-
+  
+  //get users initially when component is getting mounted
   useEffect(() => {
     if (user) {
       axiosInstance
