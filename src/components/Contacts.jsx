@@ -60,8 +60,14 @@ const useStyles = createUseStyles({
   },
 });
 export const Contacts = ({ socket }) => {
-  const { user, setContacts, contacts, setSelectedContact, usersActive } =
-    ChatState();
+  const {
+    user,
+    setContacts,
+    contacts,
+    setSelectedContact,
+    usersActive,
+    selectedContact,
+  } = ChatState();
 
   const classes = useStyles();
 
@@ -78,8 +84,12 @@ export const Contacts = ({ socket }) => {
     }
   }, []);
 
-  const handleClick = (selectedContact) => {
-    setSelectedContact(selectedContact);
+  const handleClick = (contact) => {
+    console.log(contact, selectedContact);
+
+    if (!selectedContact || contact.email !== selectedContact.email) {
+      setSelectedContact(contact);
+    }
   };
 
   return (

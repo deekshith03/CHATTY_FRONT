@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef,useState } from "react";
 import { createUseStyles } from "react-jss";
 import { ChatState } from "../context/ChatProvider";
 import { colors } from "../variables/color.variables";
@@ -26,6 +26,17 @@ const useStyles = createUseStyles({
     backgroundColor: colors.chatWindowBG,
     display: "flex",
   },
+
+  loaderContainer: {
+    width: "100%",
+    height: "100vh",
+    position: "fixed",
+    background: "rgba(0, 0, 0, 0.834) center no-repeat",
+    backgroundImage: `url(
+      "https://media.giphy.com/media/8agqybiK5LW8qrG3vJ/giphy.gif"
+    )`,
+    zIndex: 1,
+  },
 });
 
 function ChatScreen() {
@@ -33,9 +44,10 @@ function ChatScreen() {
   const socket = useRef();
   const { user, selectedContact, setSelectedContactMessages, setUsersActive } =
     ChatState();
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (selectedContact) {
+      setLoading(true);
       axiosInstance
         .post("/api/message/getmessages", {
           data: {
@@ -45,10 +57,14 @@ function ChatScreen() {
         })
         .then((res) => {
           setSelectedContactMessages(res.data);
+          setLoading(false);
         })
         .catch((error) => {
           console.log(error);
         });
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
     }
   }, [selectedContact]);
 
@@ -72,12 +88,16 @@ function ChatScreen() {
 
   return (
     <div className={classes.container}>
-      <div className={classes.window}>
-        <div>
-          <Contacts socket={socket} />
+      {loading ? (
+        <div className={classes.loaderContainer} />
+      ) : (
+        <div className={classes.window}>
+          <div>
+            <Contacts socket={socket} />
+          </div>
+          {!selectedContact ? <Welcome /> : <ChatContainer socket={socket} />}
         </div>
-        {!selectedContact ? <Welcome /> : <ChatContainer socket={socket} />}
-      </div>
+      )}
     </div>
   );
 }
