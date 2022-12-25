@@ -145,7 +145,7 @@ const ChatContainer = ({ socket, handleBack }) => {
       socket.current.on("receive_message", (msg) => {
         console.log(msg);
 
-        if (msg.senderID === selectedContact._id) {
+        if (msg.senderID === selectedContact._id || msg.senderID === user.id) {
           setSelectedContactMessages((prev) => [
             ...prev,
             {
