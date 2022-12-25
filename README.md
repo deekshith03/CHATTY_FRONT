@@ -18,7 +18,7 @@
 
 <h1>Assumptions made</h1>
 <h3> The assusmptions made on developing this app is all the contacts registered are considered to know each other and can chat with any
-member this was done to reduce the complexity of the program</p>
+member this was done to reduce the complexity of the program</h3>
 
 <h1>Front End tech Stack</h1>
 <h3> React as front end library along with axios and socket.io client to make api calls and websocket implementations using socket.io client</h3>
