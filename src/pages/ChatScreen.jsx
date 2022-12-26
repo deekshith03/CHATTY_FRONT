@@ -8,7 +8,7 @@ import ChatContainer from "../components/ChatContainer";
 import { axiosInstance } from "../axios";
 import io from "socket.io-client";
 import { useWindowWidth } from "@react-hook/window-size";
-
+import { useNavigate } from "react-router-dom";
 const Base_uri = import.meta.env.VITE_BASE_URL;
 
 const useStyles = createUseStyles({
@@ -61,7 +61,7 @@ function ChatScreen() {
   const [loading, setLoading] = useState(false);
   const [dynamicClass, setDynamicStyles] = useState("contactsOpen");
   const onlyWidth = useWindowWidth();
-
+  const navigate = useNavigate();
   const handleBack = () => {
     setSelectedContact(null);
     setDynamicStyles("contactsOpen");
@@ -109,6 +109,10 @@ function ChatScreen() {
         socket.current.off("online");
         socket.current.off("offline");
       };
+    }
+    else
+    {
+      navigate("/");
     }
   }, []);
 
