@@ -3,7 +3,7 @@
 
 
 
-<h3>Hello all, this is a basic one on one chat application developed using socket.io and MERN stack as a assignment for flo mobility interview processs </h3>
+<h3>Hello all, this is a basic one on one chat application developed using socket.io and MERN stack </h3>
 
 <h3> This web application includes features like features like real time chatting along with status monitoring of users made possible via web sockets </h3>
 
